@@ -15,14 +15,26 @@ def get_page(url):
   return data
 
 def get_next_target(s):
+# finds links in string s (webpage source code obtained from get_page)
 	target = find_last(s,'<a href=')
 	if target == -1:
-		return target
+		return None, None
 	startlink = s.find('"',target)
 	endlink = s.find('"',startlink+1)
-	url = s[startlink:endlink+1]
+	url = s[startlink+1:endlink]
 	page = s[:target]
 	return url, page
 
-page_data = get_page('dummy')
-print(get_next_target(page_data))
+def get_links(page):
+	url, page = get_next_target(page)
+	links = []
+	while url:
+		links.append(url)
+		url, page = get_next_target(page)
+	if len(links) == 0:
+		return None
+	return links
+
+### MAIN PROGRAM
+page_data = get_page('dummy') #eventually will be a url
+print(get_links(page_data))
