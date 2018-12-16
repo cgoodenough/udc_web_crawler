@@ -1,14 +1,7 @@
-# Define a procedure, find_last, that takes as input
-# two strings, a search string and a target string,
-# and returns the last position in the search string
-# where the target string appears, or -1 if there
-# are no occurrences.
-#
-# Example: find_last('aaaa', 'a') returns 3
+# early Google-like web crawler and social network building
 
-# Make sure your procedure has a return statement.
-
-def find_last(s,t):
+def find_last(s,t): 
+# input search (s) and target (t) string, returns last position of s in t or -1 if not found
 	if s.find(t) == -1:
 		return -1
 	position = 0
@@ -16,21 +9,20 @@ def find_last(s,t):
 		position += 1
 	return position
 
-print( find_last('aaaa', 'a'))
-#>>> 3
-print( find_last('aaaaa', 'aa'))
-#>>> 3
-print( find_last('aaaa', 'b'))
-#>>> -1
+def get_page(url):
+  with open('xkcd_about_page.txt', 'r') as myfile: # this is a dummy for now
+  	data=myfile.read().replace('\n', '')
+  return data
 
-print( find_last("111111111", "1"))
-#>>> 8
+def get_next_target(s):
+	target = find_last(s,'<a href=')
+	if target == -1:
+		return target
+	startlink = s.find('"',target)
+	endlink = s.find('"',startlink+1)
+	url = s[startlink:endlink+1]
+	page = s[:target]
+	return url, page
 
-print( find_last("222222222", ""))
-#>>> 9
-
-print( find_last("", "3"))
-#>>> -1
-
-print( find_last("", ""))
-#>>> 0
+page_data = get_page('dummy')
+print(get_next_target(page_data))
